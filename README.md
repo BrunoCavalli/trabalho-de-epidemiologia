@@ -1,1 +1,1 @@
-# Trabalho de avaliação da dicsiplina de epidemiologia
+# Trabalho de avaliação da disciplina de epidemiologia
