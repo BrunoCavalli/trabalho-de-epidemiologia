@@ -2,66 +2,58 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # =========================
-# Parâmetros do modelo
+# Parametros do modelo
 # =========================
+N0 = 100
+a = 0.02
+Tmin = 5
+T = np.linspace(15, 30, 300)
 
-N0 = 100        # bactérias iniciais
-a = 0.02        # constante de Ratkowsky
-Tmin = 5        # temperatura mínima
-t = 5           # tempo
-
-k = 0.0001      # taxa de infecção (ajustável)
-Npessoas = 1000 # número de pessoas na praia
-
-# intervalo de temperatura
-T = np.linspace(15, 30, 100)
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+fig.patch.set_facecolor('#0f1117')
 
 # =========================
-# Modelo bacteriano
+# Grafico 1: N(t) vs Temperatura para diferentes tempos
 # =========================
+tempos = [2, 5, 10, 20]
+colors = ['#4fc3f7', '#29b6f6', '#0288d1', '#01579b']
+
+ax1 = axes[0]
+ax1.set_facecolor('#1a1d27')
+
+for t, cor in zip(tempos, colors):
+    mu = (a * (T - Tmin))**2
+    N = N0 * np.exp(mu * t)
+    ax1.plot(T, N, color=cor, linewidth=2.5, label=f't = {t}h')
+
+ax1.set_xlabel("Temperatura da água (°C)", color='white', fontsize=12)
+ax1.set_ylabel("N(t) — Quantidade de bactérias", color='white', fontsize=12)
+ax1.set_title("Crescimento bacteriano\nN(t) = N₀·e^{[a(T−Tₘᵢₙ)]²·t}", color='white', fontsize=13, pad=12)
+ax1.legend(facecolor='#2a2d3a', edgecolor='gray', labelcolor='white', fontsize=11)
+ax1.tick_params(colors='white')
+ax1.spines[:].set_color('#444')
+ax1.grid(True, color='#333', linestyle='--', alpha=0.5)
+
+ax1.axvline(x=28, color='#ff6b6b', linestyle='--', alpha=0.7, linewidth=1.5)
+ax1.text(28.2, ax1.get_ylim()[1] * 0.5, 'T = 28°C\n(risco alto)', color='#ff6b6b', fontsize=9)
+
+# =========================
+# Grafico 2: mu vs Temperatura (curva de Ratkowsky)
+# =========================
+ax2 = axes[1]
+ax2.set_facecolor('#1a1d27')
 
 mu = (a * (T - Tmin))**2
-N = N0 * np.exp(mu * t)
+ax2.plot(T, mu, color='#a78bfa', linewidth=2.5)
+ax2.fill_between(T, mu, alpha=0.15, color='#a78bfa')
 
-# =========================
-# Modelo de infecção
-# =========================
+ax2.set_xlabel("Temperatura da água (°C)", color='white', fontsize=12)
+ax2.set_ylabel("μ — Taxa de crescimento", color='white', fontsize=12)
+ax2.set_title("Modelo de Ratkowsky\n√μ = a·(T − Tₘᵢₙ)", color='white', fontsize=13, pad=12)
+ax2.tick_params(colors='white')
+ax2.spines[:].set_color('#444')
+ax2.grid(True, color='#333', linestyle='--', alpha=0.5)
 
-P = 1 - np.exp(-k * N)        # probabilidade de infecção / modelo dose-response
-Casos = P * Npessoas         # número esperado de casos
-
-# =========================
-# Gráfico 1: Bactérias
-# =========================
-
-plt.figure()
-plt.plot(T, N)
-plt.xlabel("Temperatura da água (°C)")
-plt.ylabel("Quantidade de bactérias")
-plt.title("Crescimento bacteriano vs temperatura")
-plt.grid()
-plt.show()
-
-# =========================
-# Gráfico 2: Probabilidade
-# =========================
-
-plt.figure()
-plt.plot(T, P)
-plt.xlabel("Temperatura da água (°C)")
-plt.ylabel("Probabilidade de infecção")
-plt.title("Probabilidade de infecção vs temperatura")
-plt.grid()
-plt.show()
-
-# =========================
-# Gráfico 3: Casos esperados
-# =========================
-
-plt.figure()
-plt.plot(T, Casos)
-plt.xlabel("Temperatura da água (°C)")
-plt.ylabel("Número esperado de casos")
-plt.title("Casos esperados vs temperatura")
-plt.grid()
+plt.tight_layout(pad=3)
+plt.savefig('crescimento_bacteriano.png', dpi=150, bbox_inches='tight', facecolor='#0f1117')
 plt.show()
