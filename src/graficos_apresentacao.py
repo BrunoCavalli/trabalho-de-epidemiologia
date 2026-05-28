@@ -301,5 +301,3 @@ if __name__ == "__main__":
     grafico3_poisson_vs_nb()
     grafico4_risco_temperatura()
     grafico5_risco_vs_K()
-    print("\nTodos os gráficos gerados com sucesso através do Seaborn.")
-    print("Arquivos PNG prontos para inserir nos slides correspondentes.")
