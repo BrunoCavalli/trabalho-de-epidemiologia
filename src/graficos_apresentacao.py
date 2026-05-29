@@ -287,7 +287,7 @@ def grafico5_risco_vs_K():
     plt.tight_layout()
     plt.savefig("grafico5_risco_vs_K.png", dpi=FIG_DPI, bbox_inches="tight")
     plt.close()
-    print("✓ grafico5_risco_vs_K.png")
+    print("grafico5_risco_vs_K.png")
 
 
 # ──────────────────────────────────────────────
